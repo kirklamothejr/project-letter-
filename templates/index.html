@@ -65,7 +65,7 @@
     </div>
 
 
-    <div class="text-center">Score: <span id="score">0</span></div>
+    <div class="text-center">Score: <span id="score">0</span> Time: <span id="time"></span></div>
 
 
 
@@ -96,13 +96,21 @@
         }
       });
     }
-
+function countdown(){
+  var seconds =  $('#time').text()-1;
+   $('#time').text(seconds );
+   if(seconds > 0) {
+     setTimeout(countdown, 1000 );
+   }
+}
 
     function nextLevel() {
       $.ajax ({
         url: $("#multiplayer").is(":checked") ? "/multigame/level/new" : "/game/"+game+"/level/new",
         success: function ( result ) {
-          $("#letter").attr('src', '/static/'+result.letter+'.png')
+          $("#letter").attr('src', '/static/'+result.letter+'.png');
+          $("#time").text(result.seconds_to_solve);
+          setTimeout(countdown, 1000);
           console.log(result);
           letter= result.letter;
         }
