@@ -16,6 +16,7 @@ gstate = {}
 def newgame():
     game = {}
     game['id'] = str(random.randint(0, 10000000))
+    game['score']=0
     gstate[game['id']] = copy.copy(game)
     gstate[game['id']]['solutionset'] = copy.deepcopy(solutionset)
     return jsonify(game)
@@ -39,9 +40,11 @@ def levelguess(gameid, levelid, word):
             if len(gstate[gameid]['solutionset']):
                 results['Winner!!!'] = True
         results['Right!'] = True
+        gstate[gameid]['score'] +=1
     else:
         results['Right!'] = False
-        # TODO: Add Possible anseerws later
+        # TODO: Add possible answers later
+        results['score']=gstate[gameid]['score']
     return jsonify(results)
 
 
