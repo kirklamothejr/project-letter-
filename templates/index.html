@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Project Letter</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div>Score: <span id="score">0</span></div>
+    <div>
+    <img src="{{ url_for('static', filename="question.png") }}" id="letter">
+  </div>
+    <input type="text" id="word">
+    <button id="Check" onclick="check()">Check</button>
+    <button id="New Game" onClick="newGame()">New Game</button>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+    <script>
+    var game=-1;
+    var level;
+    $( document ).ready(function(){
+      newGame();
+    });
+
+    function newGame() {
+      $.ajax ({
+        url: "/game/new",
+        success: function ( result ) {
+          $("#score").text(result.score);
+          game=parseInt(result.id);
+          nextLevel();
+          $("#word").focus();
+
+        }
+      });
+    }
+
+
+    function nextLevel() {
+      $.ajax ({
+        url: "/game/"+game+"/level/new",
+        success: function ( result ) {
+          $("#letter").attr('src', '/static/'+result.letter+'.png')
+          console.log(result);
+          letter= result.letter;
+        }
+      });
+    }
+
+   function check() {
+     $.ajax ({
+       url: "/game/"+game+"/level/"+letter+"/"+$("#word").val(),
+       success: function ( result ) {
+         console.log(result);
+         $("#score").text(result.score);
+         $("#word").val("");
+         $("#word").focus();
+         if (result['Winner!!!']) {
+           alert("You won! Your score was " + result.score);
+           newGame();
+         } else if (!result['Right!']) {
+           alert("You lose. Your score was " + result.score);
+           newGame();
+         } else {
+           nextLevel();
+         }
+       }
+     })
+   }
+    </script>
+
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+  </body>
+</html>

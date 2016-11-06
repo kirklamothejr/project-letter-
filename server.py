@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify,render_template, url_for
 import random
 import copy
 import pickle
@@ -11,6 +11,10 @@ fin.close()
 
 gstate = {}
 
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route('/game/new')
 def newgame():
@@ -33,14 +37,16 @@ def newlevel(gameid):
 @app.route('/game/<gameid>/level/<levelid>/<word>')
 def levelguess(gameid, levelid, word):
     results = {'Winner!!!': False}
+    word = word.lower()
     if word in gstate[gameid]['solutionset'][levelid]:
+        results['Right!'] = True
+        gstate[gameid]['score'] +=1
+        results['score']=gstate[gameid]['score']
         gstate[gameid]['solutionset'][levelid].remove(word)
         if len(gstate[gameid]['solutionset'][levelid]) == 0:
             del gstate[gameid]['solutionset'][levelid]
             if len(gstate[gameid]['solutionset']):
                 results['Winner!!!'] = True
-        results['Right!'] = True
-        gstate[gameid]['score'] +=1
     else:
         results['Right!'] = False
         if len(gstate[gameid]['solutionset'][levelid]) < 5:
