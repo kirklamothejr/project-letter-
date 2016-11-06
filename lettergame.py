@@ -22,6 +22,7 @@ def run():
             print("GAME OVER\nYour Score was {}".format(answer['score']))
             game_over = True
 
+
 def multirun():
     r = requests.get('http://127.0.0.1:5000/multigame/new')
     game = json.loads(r.text)
@@ -31,7 +32,7 @@ def multirun():
         r = requests.get('http://127.0.0.1:5000/multigame/level/new')
         level = json.loads(r.text)
         guess = input("Give me a word that starts with {}: ".format(level['letter']))
-        r = requests.get('http://127.0.0.1:5000/multigamegame/level/{}/{}'.format (level['letter'], guess))
+        r = requests.get('http://127.0.0.1:5000/multigamegame/level/{}/{}'.format(level['letter'], guess))
         answer = json.loads(r.text)
         if answer['Winner!!!']:
             print("YOU'RE THE BEST")
@@ -41,7 +42,6 @@ def multirun():
         else:
             print("GAME OVER\nYour Score was {}".format(answer['score']))
             game_over = True
-
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from flask import Flask,session, jsonify,render_template, url_for
+from flask import Flask, session, jsonify, render_template, url_for
 import random
 import copy
 import pickle
@@ -18,6 +18,7 @@ gstate = {}
 def index():
     return render_template("index.html")
 
+
 @app.route('/game/new')
 def newgame():
     game = {}
@@ -28,12 +29,13 @@ def newgame():
     return jsonify(game)
 
 
-multiplayergame = {id:-1}
+multiplayergame = {id: -1}
 multiplayergame['solutionset'] = copy.deepcopy(solutionset)
+
 
 @app.route('/multigame/new')
 def newmultigame():
-    session['userid'] = random.randint(0,1000000)
+    session['userid'] = random.randint(0, 1000000)
     multiplayergame[session['userid']] = {
         'score': 0,
         'id': -1
@@ -80,6 +82,7 @@ def multiplayerMultiLevel():
     multiplayergame[session['userid']]['last_level_start_time'] = now
     return jsonify(level)
 
+
 @app.route('/game/<gameid>/level/<levelid>/<word>')
 def levelguess(gameid, levelid, word):
     now = int(time.time())
@@ -102,15 +105,17 @@ def levelguess(gameid, levelid, word):
         if len(gstate[gameid]['solutionset'][levelid]) < 5:
             results['missed_choices'] = list[gstate[gameid]['solutionset'][levelid]]
         else:
-            results['missed_choices'] = random.sample(gstate[gameid]['solutionset'][levelid],5)
+            results['missed_choices'] = random.sample(gstate[gameid]['solutionset'][levelid], 5)
     results['score'] = gstate[gameid]['score']
 
     return jsonify(results)
 
+
 @app.route('/multigame/level/<levelid>/<word>')
 def mutligamelevelguess(levelid, word):
     now = int(time.time())
-    time_cap = multiplayergame[session['userid']]['last_level_start_time'] + multiplayergame[session['userid']]['seconds_to_solve_current_level']
+    time_cap = multiplayergame[session['userid']]['last_level_start_time'] + multiplayergame[session['userid']][
+        'seconds_to_solve_current_level']
     results = {'Winner!!!': False}
     word = word.lower()
     results['Right!'] = False
@@ -129,7 +134,7 @@ def mutligamelevelguess(levelid, word):
         if len(multiplayergame['solutionset'][levelid]) < 5:
             results['missed_choices'] = list[multiplayergame['solutionset'][levelid]]
         else:
-            results['missed_choices'] = random.sample(multiplayergame['solutionset'][levelid],5)
+            results['missed_choices'] = random.sample(multiplayergame['solutionset'][levelid], 5)
     results['score'] = multiplayergame[session['userid']]['score']
 
     return jsonify(results)
