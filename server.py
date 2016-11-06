@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 fin = open('output.txt', "rb")
 solutionset = pickle.load(fin)
-fin.close
+fin.close()
 
 gstate = {}
 
