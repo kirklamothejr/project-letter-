@@ -41,6 +41,7 @@ def levelguess(gameid, levelid, word):
                 results['Winner!!!'] = True
         results['Right!'] = True
         gstate[gameid]['score'] +=1
+        results['score']=gstate[gameid]['score']
     else:
         results['Right!'] = False
         # TODO: Add possible answers later
