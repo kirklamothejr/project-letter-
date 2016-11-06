@@ -1,26 +1,13 @@
 from flask import Flask, jsonify
 import random
 import copy
+import pickle
 
 app = Flask(__name__)
 
-solutionset = {}
-solutionset['A'] = set()
-solutionset['A'].add("Apple")
-solutionset['A'].add("Apron")
-solutionset['A'].add("Account")
-solutionset['B'] = set()
-solutionset['B'].add("Bananna")
-solutionset['B'].add("Blanket")
-solutionset['B'].add("Bake")
-solutionset['C'] = set()
-solutionset['C'].add("Cake")
-solutionset['C'].add("Cell")
-solutionset['C'].add("Camara")
-
-alphabet = ['A', 'B',
-            'C']  # , 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-# 'V', 'W', 'X', 'Y', 'Z']
+fin = open('output.txt', "rb")
+solutionset = pickle.load(fin)
+fin.close
 
 gstate = {}
 
