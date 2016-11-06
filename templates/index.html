@@ -46,8 +46,9 @@
             </div>
             <p class="lead">
             </br>
-            <a class="btn btn-med btn-default">Multiplayer</a>
-              <a href="https://projectlettersite.wordpress.com/" target="_blank" class="btn btn-lg btn-default">Learn more</a>
+              <a href="https://projectlettersite.wordpress.com/" target="_blank" class="btn btn-primary btn-lg btn-default">Learn more</a>
+            <br/>
+              <input id="multiplayer" type=checkbox> <label for="multiplayer">Multiplayer</label>
             </p>
           </div>
 
@@ -85,7 +86,7 @@
 
     function newGame() {
       $.ajax ({
-        url: "/game/new",
+        url:  $("#multiplayer").is(":checked") ? "/multigame/new" : "/game/new",
         success: function ( result ) {
           $("#score").text(result.score);
           game=parseInt(result.id);
@@ -99,7 +100,7 @@
 
     function nextLevel() {
       $.ajax ({
-        url: "/game/"+game+"/level/new",
+        url: $("#multiplayer").is(":checked") ? "/multigame/level/new" : "/game/"+game+"/level/new",
         success: function ( result ) {
           $("#letter").attr('src', '/static/'+result.letter+'.png')
           console.log(result);
@@ -110,7 +111,7 @@
 
    function check() {
      $.ajax ({
-       url: "/game/"+game+"/level/"+letter+"/"+$("#word").val(),
+       url: $("#multiplayer").is(":checked") ? "/multigame/level/"+letter+"/"+$("#word").val() : "/game/"+game+"/level/"+letter+"/"+$("#word").val(),
        success: function ( result ) {
          console.log(result);
          $("#score").text(result.score);
@@ -127,11 +128,15 @@
          }
        }
      })
+
    }
     </script>
 
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <embed src="{{ url_for('static', filename="mixdown.wav") }}" autostart="true" loop="false">
     </audio>
+    <!--<embed src="{{ url_for('static', filename="Buzzer.mp3")}}"></audio>
+    <embed src="{{ url_for('static', filename="Ding.mp3")}}"></audio>-->
+
   </body>
 </html>
