@@ -56,8 +56,11 @@ def levelguess(gameid, levelid, word):
         gstate[gameid]['score'] +=1
     else:
         results['Right!'] = False
-        # TODO: Add possible answers later
-        results['score']=gstate[gameid]['score']
+        if len(gstate[gameid]['solutionset'][levelid]) < 5:
+            results['missed_choices'] = list[gstate[gameid]['solutionset'][levelid]]
+        else:
+            results['missed_choices'] = random.sample(gstate[gameid]['solutionset'][levelid],5)
+    results['score'] = gstate[gameid]['score']
     return jsonify(results)
 
 
