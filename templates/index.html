@@ -23,7 +23,7 @@
     <!--<embed
     src="mixdown.wav" autostart="true" loop="true">
   </embed>-->
-  <audio src="{{ url_for('static', filename="mixdown.wav") }}" autostart="true" loop="true"></audio>
+
     <div class="site-wrapper">
 
       <div class="site-wrapper-inner">
@@ -46,6 +46,7 @@
             </div>
             <p class="lead">
             </br>
+            <a class="btn btn-med btn-default">Multiplayer</a>
               <a href="https://projectlettersite.wordpress.com/" target="_blank" class="btn btn-lg btn-default">Learn more</a>
             </p>
           </div>
@@ -130,5 +131,7 @@
     </script>
 
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <embed src="{{ url_for('static', filename="mixdown.wav") }}" autostart="true" loop="false">
+    </audio>
   </body>
 </html>
