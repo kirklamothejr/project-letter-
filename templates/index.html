@@ -9,6 +9,7 @@
 
     <!-- Bootstrap -->
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='cover.css') }}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,13 +19,49 @@
     <![endif]-->
   </head>
   <body>
-    <div>Score: <span id="score">0</span></div>
-    <div>
-    <img src="{{ url_for('static', filename="question.png") }}" id="letter">
-  </div>
-    <input type="text" id="word">
-    <button id="Check" onclick="check()">Check</button>
-    <button id="New Game" onClick="newGame()">New Game</button>
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner"></div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Project Letter</h1>
+            <div>
+            <img src="{{ url_for('static', filename="question.png") }}" id="letter">
+            </div>
+            <br/>
+            <div>
+            <input type="text" id="word">
+            <button id="Check" onClick="check()">Check</button>
+            <button id="New Game" onClick="newGame()">New Game</button>
+            </div>
+            <p class="lead">
+            </br>
+              <a href="https://projectlettersite.wordpress.com/" target="_blank" class="btn btn-lg btn-default">Learn more</a>
+            </p>
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p><a href="http://getbootstrap.com"></a></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="text-center">Score: <span id="score">0</span></div>
+
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
@@ -34,6 +71,10 @@
     var game=-1;
     var level;
     $( document ).ready(function(){
+        $('#word').keypress(function(e){
+          if(e.keyCode==13)
+          $('#Check').click();
+        });
       newGame();
     });
 
@@ -74,7 +115,7 @@
            alert("You won! Your score was " + result.score);
            newGame();
          } else if (!result['Right!']) {
-           alert("You lose. Your score was " + result.score);
+           alert("Game Over, You Lose. Your score was " + result.score);
            newGame();
          } else {
            nextLevel();
