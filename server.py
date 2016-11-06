@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify,render_template, url_for
 import random
 import copy
 import pickle
@@ -12,6 +12,10 @@ fin.close()
 
 gstate = {}
 
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route('/game/new')
 def newgame():
@@ -47,24 +51,26 @@ def levelguess(gameid, levelid, word):
     now = int(time.time())
     time_cap = gstate[gameid]['last_level_start_time'] + gstate[gameid]['seconds_to_solve_current_level']
     results = {'Winner!!!': False}
+    word = word.lower()
 
+    results['Right!'] = False
     if now > time_cap:
         game_over = True
-        results['Right!'] = False
-        results['score'] = gstate[gameid]['score']
     elif word in gstate[gameid]['solutionset'][levelid]:
+        results['Right!'] = True
+        gstate[gameid]['score'] += 1
         gstate[gameid]['solutionset'][levelid].remove(word)
         if len(gstate[gameid]['solutionset'][levelid]) == 0:
             del gstate[gameid]['solutionset'][levelid]
             if len(gstate[gameid]['solutionset']):
                 results['Winner!!!'] = True
-        results['Right!'] = True
-        gstate[gameid]['score'] += 1
-        results['score'] = gstate[gameid]['score']
     else:
-        results['Right!'] = False
-        # TODO: Add possible answers later
-        results['score'] = gstate[gameid]['score']
+        if len(gstate[gameid]['solutionset'][levelid]) < 5:
+            results['missed_choices'] = list[gstate[gameid]['solutionset'][levelid]]
+        else:
+            results['missed_choices'] = random.sample(gstate[gameid]['solutionset'][levelid],5)
+    results['score'] = gstate[gameid]['score']
+
     return jsonify(results)
 
 
