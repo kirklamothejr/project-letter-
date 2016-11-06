@@ -19,10 +19,14 @@
     <![endif]-->
   </head>
   <body>
+    <!--<p>HTML</p>-->
+    <!--<embed
+    src="mixdown.wav" autostart="true" loop="true">
+  </embed>-->
+  <audio src="{{ url_for('static', filename="mixdown.wav") }}" autostart="true" loop="true"></audio>
     <div class="site-wrapper">
 
       <div class="site-wrapper-inner">
-
         <div class="cover-container">
 
           <div class="masthead clearfix">
@@ -33,7 +37,7 @@
             <h1 class="cover-heading">Project Letter</h1>
             <div>
             <img src="{{ url_for('static', filename="question.png") }}" id="letter">
-            </div>
+          </div>
             <br/>
             <div>
             <input type="text" id="word">
