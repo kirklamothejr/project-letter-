@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify,render_template
 import random
 import copy
 
@@ -24,6 +24,10 @@ alphabet = ['A', 'B',
 
 gstate = {}
 
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route('/game/new')
 def newgame():
